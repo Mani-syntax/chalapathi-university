@@ -54,12 +54,13 @@ export default function AdminPortal() {
       alert("No leads available to export!");
       return;
     }
-    const headers = ["ID", "Timestamp", "Name", "Mobile", "Email", "City", "State", "Qualification", "Year of Passing", "Program", "Query"];
+    const headers = ["ID", "Timestamp", "Form Type", "Name", "Mobile", "Email", "City", "State", "Qualification", "Year of Passing", "Program", "Query"];
     const csvRows = [headers.join(",")];
     filteredLeads.forEach((lead: any) => {
       const values = [
         lead.id || "",
         lead.timestamp || "",
+        `"${(lead.formType || "Enquiry").replace(/"/g, '""')}"`,
         `"${(lead.name || "").replace(/"/g, '""')}"`,
         lead.mobile || "",
         lead.email || "",
@@ -76,7 +77,7 @@ export default function AdminPortal() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `chalapathi_leads_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `chalapathi_admissions_data_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -165,7 +166,7 @@ export default function AdminPortal() {
             <img src="/logo.png?v=3" alt="Chalapathi University" className="h-12 w-auto object-contain" />
             <div className="border-l border-gray-200 pl-4">
               <h1 className="text-lg font-black text-[#072A6C] uppercase tracking-wide">Admissions Lead Manager</h1>
-              <p className="text-[11px] text-gray-400 font-bold uppercase mt-0.5">Real-time Campaign Enquiries</p>
+              <p className="text-[11px] text-gray-400 font-bold uppercase mt-0.5">Real-time Campaign & Form Submissions</p>
             </div>
           </div>
           <button
@@ -180,7 +181,7 @@ export default function AdminPortal() {
         {/* Dashboard Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-2xs">
-            <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">Total Leads Collected</span>
+            <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">Total Submissions Collected</span>
             <span className="text-3xl font-black text-[#072A6C] mt-2 block">{leads.length}</span>
           </div>
           <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-2xs">
@@ -212,14 +213,14 @@ export default function AdminPortal() {
                 className="h-11 px-5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 font-bold text-xs uppercase tracking-wider rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <Trash2 size={14} />
-                <span>Clear Leads</span>
+                <span>Clear Submissions</span>
               </button>
               <button 
                 onClick={handleExportCSV}
                 className="h-11 px-6 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all inline-flex items-center gap-2 cursor-pointer border-none"
               >
                 <FileSpreadsheet size={15} />
-                <span>Export to CSV</span>
+                <span>Download CSV Report</span>
               </button>
             </div>
 
@@ -232,25 +233,26 @@ export default function AdminPortal() {
                 <thead>
                   <tr className="border-b border-gray-200 text-[10px] text-gray-400 uppercase tracking-wider bg-gray-50/50">
                     <th className="py-4 px-5">Date & Time</th>
+                    <th className="py-4 px-5">Form Source</th>
                     <th className="py-4 px-5">Student Name</th>
-                    <th className="py-4 px-5">Contact details</th>
+                    <th className="py-4 px-5">Contact Details</th>
                     <th className="py-4 px-5">Location</th>
                     <th className="py-4 px-5">Academic Info</th>
                     <th className="py-4 px-5">Interested Program</th>
-                    <th className="py-4 px-5">Query Message</th>
+                    <th className="py-4 px-5">Query / Notes</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-700 bg-white">
                   {filteredLeads.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-16 text-center text-gray-400 font-light">
-                        No admissions enquiry leads found.
+                      <td colSpan={8} className="py-16 text-center text-gray-400 font-light">
+                        No admissions enquiry leads found. Fill any form on the site to capture data here!
                       </td>
                     </tr>
                   ) : (
                     filteredLeads.map((lead: any, i: number) => (
                       <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                        <td className="py-4 px-5 whitespace-nowrap text-gray-400 font-mono text-[10px]">
+                        <td className="py-4 px-5 whitespace-nowrap text-gray-500 font-mono text-[11px]">
                           {lead.timestamp ? new Date(lead.timestamp).toLocaleDateString("en-IN", {
                             day: "2-digit",
                             month: "short",
@@ -259,18 +261,25 @@ export default function AdminPortal() {
                             minute: "2-digit"
                           }) : "N/A"}
                         </td>
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                            lead.formType?.includes("Application") ? "bg-purple-50 text-purple-700 border border-purple-200" : "bg-amber-50 text-amber-700 border border-amber-200"
+                          }`}>
+                            {lead.formType || "Enquiry"}
+                          </span>
+                        </td>
                         <td className="py-4 px-5 font-bold text-gray-900">{lead.name}</td>
                         <td className="py-4 px-5 space-y-0.5">
                           <span className="block font-bold text-gray-800">{lead.mobile}</span>
                           <span className="block text-[10px] text-gray-400 font-semibold">{lead.email}</span>
                         </td>
                         <td className="py-4 px-5">
-                          <span className="block text-gray-800 font-semibold">{lead.city}</span>
-                          <span className="block text-[10px] text-gray-400 font-bold uppercase">{lead.state}</span>
+                          <span className="block text-gray-800 font-semibold">{lead.city || "-"}</span>
+                          <span className="block text-[10px] text-gray-400 font-bold uppercase">{lead.state || "-"}</span>
                         </td>
                         <td className="py-4 px-5">
-                          <span className="block text-gray-800 font-semibold">{lead.qualification}</span>
-                          <span className="block text-[10px] text-gray-400 font-bold">Class of {lead.yearOfPassing}</span>
+                          <span className="block text-gray-800 font-semibold">{lead.qualification || "-"}</span>
+                          <span className="block text-[10px] text-gray-400 font-bold">{lead.yearOfPassing ? `Class of ${lead.yearOfPassing}` : "-"}</span>
                         </td>
                         <td className="py-4 px-5 font-extrabold text-blue-900">{lead.program}</td>
                         <td className="py-4 px-5 max-w-[240px] truncate text-gray-500 italic" title={lead.query}>

@@ -3484,6 +3484,19 @@ export function AdmissionsApplyFlow() {
       alert("Please fill all fields to continue.");
       return;
     }
+    const newLead = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      formType: "Admission Application 2026-27",
+      name: formData.name,
+      mobile: formData.mobile,
+      email: formData.email,
+      state: formData.state,
+      program: formData.program,
+      query: `Direct Admission Application | School: ${formData.school}`
+    };
+    const existingLeads = JSON.parse(localStorage.getItem("chalapathi_enquiry_leads") || "[]");
+    localStorage.setItem("chalapathi_enquiry_leads", JSON.stringify([newLead, ...existingLeads]));
     handleNext();
   };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Link, Navigate } from "react-router-dom";
 import { X, RefreshCw, CheckCircle2, Megaphone, Bell, Calendar, GraduationCap, FileText, Award, BookOpen, User, Phone, Mail, MapPin, Landmark, MessageSquare, ArrowRight, Send, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Header from "./components/layout/Header";
@@ -139,7 +139,7 @@ const ENQUIRY_SCHOOLS_DATA = [
 
 function AppContent() {
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith("/admin") || location.pathname.includes("chalapathi-secret-admin-portal-98421");
+  const isAdminPage = location.pathname.includes("chalapathi-secret-admin-portal-98421");
   const isLandingPage = location.pathname === "/apply-now" || location.pathname === "/landing";
   const { announcements, showAnnouncementsDrawer, setShowAnnouncementsDrawer } = useData();
 
@@ -402,8 +402,8 @@ function AppContent() {
             <Route path="/terms-conditions" element={<DynamicPage />} />
             <Route path="/sitemap" element={<DynamicPage />} />
             
-            {/* Admin Portal Routes (Secret Unique URL) */}
-            <Route path="/admin" element={<AdminPortal />} />
+            {/* Admin Portal (Restricted strictly to Secret URL) */}
+            <Route path="/admin" element={<Navigate to="/" replace />} />
             <Route path="/chalapathi-secret-admin-portal-98421" element={<AdminPortal />} />
           </Routes>
         </main>

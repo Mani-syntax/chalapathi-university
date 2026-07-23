@@ -131,6 +131,22 @@ export function EnquiryFormContent({ onClose }: { onClose?: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newLead = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      formType: "Admission Enquiry",
+      name: formData.name,
+      mobile: formData.mobile,
+      email: formData.email,
+      city: formData.city,
+      state: formData.state,
+      qualification: formData.qualification,
+      yearOfPassing: formData.yearOfPassing,
+      program: formData.program,
+      query: formData.query
+    };
+    const existingLeads = JSON.parse(localStorage.getItem("chalapathi_enquiry_leads") || "[]");
+    localStorage.setItem("chalapathi_enquiry_leads", JSON.stringify([newLead, ...existingLeads]));
     setFormSubmitted(true);
   };
 
