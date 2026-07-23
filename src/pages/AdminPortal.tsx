@@ -17,13 +17,19 @@ export default function AdminPortal() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === "admin123" || passcode === "admin" || (username.trim().toLowerCase() === "admin" && passcode)) {
+    const cleanUser = username.trim().toLowerCase();
+    const isUserValid = cleanUser === "chalapathiuniversity.edu.in" || cleanUser === "admin@chalapathiuniversity.edu.in" || cleanUser === "admin";
+    const isPassValid = passcode === "chalapathi@12345" || passcode === "admin123" || passcode === "admin";
+    
+    if (isUserValid && isPassValid) {
       setIsAuthenticated(true);
       setAuthError("");
+    } else if (!username.trim()) {
+      setAuthError("Please enter your username.");
     } else if (!passcode) {
-      setAuthError("Please enter password to sign in.");
+      setAuthError("Please enter your password.");
     } else {
-      setAuthError("Invalid credentials! Default passcode: admin123");
+      setAuthError("Invalid credentials! Please check your username and password.");
     }
   };
 
