@@ -58,62 +58,6 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
-function AnimatedCounter({ value, duration = 2500 }: { value: string; duration?: number }) {
-  const [count, setCount] = React.useState(0);
-  const elementRef = React.useRef<HTMLSpanElement>(null);
-  const [hasAnimated, setHasAnimated] = React.useState(false);
-
-  const numericPart = parseInt(value.replace(/,/g, "").replace(/[^0-9]/g, ""), 10) || 0;
-  const suffix = value.replace(/[0-9,]/g, "");
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let startTimestamp: number | null = null;
-          const step = (timestamp: number) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(easeProgress * numericPart));
-            if (progress < 1) {
-              window.requestAnimationFrame(step);
-            }
-          };
-          window.requestAnimationFrame(step);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, [numericPart, duration, hasAnimated]);
-
-  const formattedCount = numericPart >= 10000 
-    ? count.toLocaleString("en-IN") 
-    : count;
-
-  return (
-    <span 
-      ref={elementRef} 
-      className={`block text-[22px] font-[800] leading-none text-[#D4AF37] transition-all duration-300 ${
-        hasAnimated && count < numericPart ? "scale-[0.95] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]" : "scale-100"
-      }`}
-    >
-      {formattedCount}{suffix}
-    </span>
-  );
-}
 
 export default function Home() {
   const { programs } = useData();
@@ -431,41 +375,6 @@ export default function Home() {
         />
       </section>
 
-      {/* ═══ STATISTICS BAR (Dark Blue - 14px border-radius container) ═══ */}
-      <section className="bg-[#072A6C] w-full text-white py-8 select-none relative z-20 overflow-hidden">
-        <motion.div
-          className="max-w-[1440px] mx-auto px-5"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-        >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 justify-items-center text-center">
-            {[
-              { n: "25+", label: "Years of Excellence", icon: Trophy },
-              { n: "150+", label: "Programs Offered", icon: GraduationCap },
-              { n: "50+", label: "Expert Faculty", icon: Users },
-              { n: "300+", label: "Industry Partners", icon: Handshake },
-              { n: "20,000+", label: "Successful Alumni", icon: Landmark },
-              { n: "95%", label: "Placement Success", icon: Award },
-            ].map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.div key={i} className="flex flex-col items-center max-w-[160px] rounded-[14px]" variants={fadeUp}>
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mb-3 border border-[#D4AF37]/30 shadow-sm relative group overflow-hidden">
-                    <Icon size={18} className="text-[#D4AF37] relative z-10 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
-                    <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                  <AnimatedCounter value={s.n} />
-                  <span className="block text-[11px] text-gray-200 font-[500] mt-2 leading-tight">
-                    {s.label}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-      </section>
 
       {/* ═══ WHY CHOOSE US SECTION ═══ */}
       <section className="bg-[#F8FAFC] w-full py-10 md:py-12 border-y border-gray-100">
@@ -701,23 +610,16 @@ export default function Home() {
                     </div>
                     
                     {/* Hover State (Sliding up) */}
-                    <div className="absolute inset-0 flex flex-col justify-start items-center p-5 opacity-0 translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-white text-center">
+                    <div className="absolute inset-0 flex flex-col justify-center items-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white text-center">
                       <div className="flex items-center justify-center mb-3 transition-transform duration-500 group-hover:scale-[1.06]">
-                        {getIllustrationForProgram(program.title, 80)}
+                        {getIllustrationForProgram(program.title, 85)}
                       </div>
                       <h3 className="font-[800] text-[#072A6C] text-[15px] mb-2 leading-tight max-w-[250px]">
                         {program.title}
                       </h3>
-                      <p className="text-[12px] text-gray-500 line-clamp-3 leading-relaxed mb-4">
+                      <p className="text-[12px] text-gray-500 line-clamp-4 leading-relaxed font-[500]">
                         {program.overview || program.desc}
                       </p>
-                      
-                      <Link 
-                        to={`/academics/${program.slug}`}
-                        className="mt-auto bg-[#072A6C] text-white px-6 py-2 rounded-full text-[13px] font-[700] flex items-center gap-2 hover:bg-[#D4AF37] transition-colors shadow-md"
-                      >
-                        Read More <ArrowRight size={14} />
-                      </Link>
                     </div>
                   </motion.div>
                 );
@@ -726,122 +628,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ ADMISSION FORM & ADMISSION ENQUIRY INLINE TABS & FORM ═══ */}
-      <section className="bg-gradient-to-b from-[#f8f9fa] to-white py-14 border-t border-gray-100 font-[var(--font-poppins)]">
-        <div className="max-w-[1280px] mx-auto px-5">
+      {/* ═══ ADMISSION ENQUIRY FORM ═══ */}
+      <section className="bg-gradient-to-b from-[#f8f9fa] to-white py-16 border-t border-gray-100 font-[var(--font-poppins)]">
+        <div className="max-w-[1280px] mx-auto px-5 flex flex-col items-center">
           
-          {/* Option Selector Cards (Side-by-Side Tabs) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 select-none max-w-[940px] mx-auto">
+          {/* Creative Attractive Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#072A6C]/5 border border-[#072A6C]/15 shadow-xs mb-3">
+              <Sparkles size={14} className="text-[#D4AF37]" />
+              <span className="text-[11px] font-[800] tracking-widest text-[#072A6C] uppercase">
+                ADMISSIONS OPEN 2026–27
+              </span>
+            </div>
             
-            {/* LEFT CARD: Admission Form */}
-            <div 
-              onClick={() => {
-                setActiveFormTab("admission");
-                setInlineFormSubmitted(null);
-              }}
-              className={`rounded-[20px] p-5 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-left relative overflow-hidden group cursor-pointer transition-all duration-300 border ${
-                activeFormTab === "admission"
-                  ? "bg-gradient-to-br from-[#072A6C] to-indigo-950 text-white border-[#D4AF37] ring-4 ring-[#D4AF37]/30 scale-[1.01] shadow-xl"
-                  : "bg-white text-gray-800 border-gray-200 hover:border-[#072A6C] hover:shadow-lg"
-              }`}
-            >
-              <div className="space-y-1.5 max-w-[300px]">
-                <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                    activeFormTab === "admission" ? "bg-white/10 text-[#D4AF37]" : "bg-[#072A6C]/10 text-[#072A6C]"
-                  }`}>
-                    <GraduationCap size={17} />
-                  </div>
-                  {activeFormTab === "admission" && (
-                    <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-[#D4AF37] text-white tracking-wider">
-                      Selected Form
-                    </span>
-                  )}
-                </div>
-                <h4 className={`text-sm sm:text-base font-black uppercase tracking-wider ${
-                  activeFormTab === "admission" ? "text-white" : "text-[#072A6C]"
-                }`}>
-                  Admission Form 2026-27
-                </h4>
-                <p className={`text-[11px] leading-relaxed font-light ${
-                  activeFormTab === "admission" ? "text-white/80" : "text-gray-500"
-                }`}>
-                  Complete your official online application to secure your seat for B.Tech, M.Tech, MBA & Ph.D.
-                </p>
-              </div>
-              
-              <button
-                type="button"
-                className={`h-9 px-4 text-[11px] font-black uppercase tracking-wider rounded-lg transition-all shrink-0 shadow flex items-center gap-1.5 cursor-pointer outline-none border-none ${
-                  activeFormTab === "admission"
-                    ? "bg-[#D4AF37] text-white"
-                    : "bg-[#072A6C] text-white group-hover:bg-[#D4AF37]"
-                }`}
-              >
-                Admission Form <ArrowRight size={13} />
-              </button>
-            </div>
-
-            {/* RIGHT CARD: Admission Enquiry Form */}
-            <div 
-              onClick={() => {
-                setActiveFormTab("enquiry");
-                setInlineFormSubmitted(null);
-              }}
-              className={`rounded-[20px] p-5 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-left relative overflow-hidden group cursor-pointer transition-all duration-300 border ${
-                activeFormTab === "enquiry"
-                  ? "bg-gradient-to-br from-[#D4AF37] to-amber-950 text-white border-[#072A6C] ring-4 ring-[#072A6C]/30 scale-[1.01] shadow-xl"
-                  : "bg-white text-gray-800 border-gray-200 hover:border-[#D4AF37] hover:shadow-lg"
-              }`}
-            >
-              <div className="space-y-1.5 max-w-[300px]">
-                <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                    activeFormTab === "enquiry" ? "bg-white/10 text-white" : "bg-amber-500/10 text-[#D4AF37]"
-                  }`}>
-                    <HelpCircle size={17} />
-                  </div>
-                  {activeFormTab === "enquiry" && (
-                    <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-[#072A6C] text-white tracking-wider">
-                      Selected Form
-                    </span>
-                  )}
-                </div>
-                <h4 className={`text-sm sm:text-base font-black uppercase tracking-wider ${
-                  activeFormTab === "enquiry" ? "text-white" : "text-[#072A6C]"
-                }`}>
-                  Admission Enquiry Form
-                </h4>
-                <p className={`text-[11px] leading-relaxed font-light ${
-                  activeFormTab === "enquiry" ? "text-white/80" : "text-gray-500"
-                }`}>
-                  Have questions about eligibility, fee structure, or hostels? Get in touch with our expert counselors.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                className={`h-9 px-4 text-[11px] font-black uppercase tracking-wider rounded-lg transition-all shrink-0 shadow flex items-center gap-1.5 cursor-pointer outline-none border-none ${
-                  activeFormTab === "enquiry"
-                    ? "bg-white text-[#072A6C]"
-                    : "bg-[#D4AF37] text-white group-hover:bg-[#072A6C]"
-                }`}
-              >
-                Admission Enquiry <ArrowRight size={13} />
-              </button>
-            </div>
-
+            <h2 className="text-[32px] md:text-[42px] font-[900] text-[#072A6C] tracking-tight leading-tight mb-3">
+              Shape Your Future at <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#072A6C] via-[#1F4FA8] to-[#D4AF37]">Chalapathi</span>
+            </h2>
+            
+            <p className="text-[#64748B] text-[14px] md:text-[15px] font-[500] leading-relaxed">
+              Take the first step toward world-class education. Fill out the admission enquiry form below to connect with our counseling team.
+            </p>
           </div>
 
-          {/* INLINE FORM (DIRECTLY BELOW THE OPTIONS) */}
-          <div className="mt-8 max-w-[1240px] mx-auto">
-            {activeFormTab === "admission" ? (
-              <AdmissionsApplyFlow />
-            ) : (
-              <EnquiryFormContent />
-            )}
-          </div>
-
+          <EnquiryFormContent />
         </div>
       </section>
 
@@ -988,8 +797,8 @@ export default function Home() {
                 <img 
                   src="/chairman_portrait.png" 
                   alt="Chairman Dr. Y. V Anjaneyulu" 
-                  className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-103"
-                  style={{ objectPosition: "50% 0%" }}
+                  className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-105"
+                  style={{ objectPosition: "50% 0%", transform: "translateY(-30px) scale(1.12)" }}
                 />
                 
                 {/* Light reflection animation overlay */}

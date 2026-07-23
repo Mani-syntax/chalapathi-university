@@ -58,42 +58,6 @@ export default function Home() {
         />
       </section>
 
-      {/* ═══ STATISTICS BAR (Dark Blue - 14px border-radius container) ═══ */}
-      <section className="bg-[#072A6C] w-full text-white py-8 select-none relative z-20 overflow-hidden">
-        <motion.div
-          className="max-w-[1440px] mx-auto px-5"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-        >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 justify-items-center text-center">
-            {[
-              { n: "25+", label: "Years of Excellence", icon: Trophy },
-              { n: "150+", label: "Programs Offered", icon: GraduationCap },
-              { n: "50+", label: "Expert Faculty", icon: Users },
-              { n: "300+", label: "Industry Partners", icon: Handshake },
-              { n: "20,000+", label: "Successful Alumni", icon: Landmark },
-              { n: "95%", label: "Placement Success", icon: Award },
-            ].map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.div key={i} className="flex flex-col items-center max-w-[160px] rounded-[14px]" variants={fadeUp}>
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mb-3 border border-[#D4AF37]/30 shadow-sm">
-                    <Icon size={18} className="text-[#D4AF37]" strokeWidth={2} />
-                  </div>
-                  <span className="block text-[22px] font-[800] leading-none text-[#D4AF37]">
-                    {s.n}
-                  </span>
-                  <span className="block text-[11px] text-gray-200 font-[500] mt-2 leading-tight">
-                    {s.label}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-      </section>
 
       {/* ═══ WHY CHOOSE US SECTION ═══ */}
       <section className="max-w-[1440px] mx-auto w-full px-5 py-20 text-center">
