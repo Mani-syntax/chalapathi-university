@@ -20,8 +20,8 @@ export default function AdminPortal() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanUser = username.trim().toLowerCase();
-    const isUserValid = cleanUser === "chalapathiuniversity.edu.in" || cleanUser === "admin@chalapathiuniversity.edu.in" || cleanUser === "admin";
-    const isPassValid = passcode === "chalapathi@12345" || passcode === "admin123" || passcode === "admin";
+    const isUserValid = cleanUser === "chalapathiuniversity.edu.in" || cleanUser === "admin@chalapathiuniversity.edu.in";
+    const isPassValid = passcode === "chalapathi@12345";
     
     if (isUserValid && isPassValid) {
       sessionStorage.setItem("chalapathi_admin_authed", "true");
