@@ -206,15 +206,15 @@ function AppContent() {
     setActiveAccordion(activeAccordion === id ? null : id);
   };
 
-  // Automatic popup trigger on every page load/reload
+  // Automatic popup trigger on every page load/reload (disabled on admin pages)
   useEffect(() => {
-    if (!showSplash) {
+    if (!showSplash && !isAdminPage) {
       const timer = setTimeout(() => {
         setShowEnquiryModal(true);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [showSplash]);
+  }, [showSplash, isAdminPage]);
 
   useEffect(() => {
     if (showEnquiryModal) {

@@ -5,8 +5,10 @@ import {
 } from "lucide-react";
 
 export default function AdminPortal() {
-  // Authentication states
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Authentication states (persisted in sessionStorage so reload maintains admin session)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem("chalapathi_admin_authed") === "true";
+  });
   const [username, setUsername] = useState("");
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +24,7 @@ export default function AdminPortal() {
     const isPassValid = passcode === "chalapathi@12345" || passcode === "admin123" || passcode === "admin";
     
     if (isUserValid && isPassValid) {
+      sessionStorage.setItem("chalapathi_admin_authed", "true");
       setIsAuthenticated(true);
       setAuthError("");
     } else if (!username.trim()) {
@@ -31,6 +34,11 @@ export default function AdminPortal() {
     } else {
       setAuthError("Invalid credentials! Please check your username and password.");
     }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("chalapathi_admin_authed");
+    setIsAuthenticated(false);
   };
 
   // Get active leads
@@ -176,7 +184,7 @@ export default function AdminPortal() {
             </div>
           </div>
           <button
-            onClick={() => setIsAuthenticated(false)}
+            onClick={handleLogout}
             className="h-10 px-5 bg-white hover:bg-rose-50 border border-gray-200 text-rose-600 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-colors inline-flex items-center gap-2 cursor-pointer shadow-2xs"
           >
             <LogOut size={14} />
