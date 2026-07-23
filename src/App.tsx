@@ -9,7 +9,6 @@ import DynamicPage from "./pages/DynamicPage";
 import Genesis from "./pages/Genesis";
 import AnnouncementDetails from "./pages/AnnouncementDetails";
 import AdminPortal from "./pages/AdminPortal";
-import LandingPage from "./pages/LandingPage";
 import { DataProvider, useData } from "./context/DataContext";
 
 // Scroll to top helper on route change
@@ -140,7 +139,6 @@ const ENQUIRY_SCHOOLS_DATA = [
 function AppContent() {
   const location = useLocation();
   const isAdminPage = location.pathname.includes("chalapathi-secret-admin-portal-98421");
-  const isLandingPage = location.pathname === "/apply-now" || location.pathname === "/landing";
   const { announcements, showAnnouncementsDrawer, setShowAnnouncementsDrawer } = useData();
 
   const [showSplash, setShowSplash] = useState(true); // Changed to always show on reload
@@ -344,7 +342,7 @@ function AppContent() {
 
       <ScrollToTop />
       <div className="flex flex-col min-h-screen bg-[#F7F8FC]">
-        {!isAdminPage && !isLandingPage && <Header />}
+        {!isAdminPage && <Header />}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -375,15 +373,11 @@ function AppContent() {
             <Route path="/academics/bos" element={<DynamicPage />} />
             <Route path="/academics/*" element={<DynamicPage />} />
 
-            {/* Admissions Routes */}
-            <Route path="/admissions" element={<DynamicPage />} />
-            <Route path="/admissions/undergraduate" element={<DynamicPage />} />
-            <Route path="/admissions/postgraduate" element={<DynamicPage />} />
-            <Route path="/admissions/phd" element={<DynamicPage />} />
-            <Route path="/admissions/international" element={<DynamicPage />} />
-            <Route path="/admissions/apply" element={<DynamicPage />} />
-            <Route path="/apply-now" element={<LandingPage />} />
-            <Route path="/landing" element={<LandingPage />} />
+            {/* Admissions & Apply Redirects */}
+            <Route path="/admissions" element={<Navigate to="/#enquiry-form" replace />} />
+            <Route path="/admissions/*" element={<Navigate to="/#enquiry-form" replace />} />
+            <Route path="/apply-now" element={<Navigate to="/#enquiry-form" replace />} />
+            <Route path="/landing" element={<Navigate to="/#enquiry-form" replace />} />
             {/* Campus Life Routes */}
             <Route path="/campus-life" element={<DynamicPage />} />
             <Route path="/campus-life/hostels" element={<DynamicPage />} />
@@ -407,13 +401,13 @@ function AppContent() {
             <Route path="/chalapathi-secret-admin-portal-98421" element={<AdminPortal />} />
           </Routes>
         </main>
-        {!isAdminPage && !isLandingPage && <Footer />}
+        {!isAdminPage && <Footer />}
       </div>
 
       {/* ======================================================== */}
       {/* 🌟 SLIMMED NON-OVERLAPPING STACKED RIGHT-SIDE TABS       */}
       {/* ======================================================== */}
-      {!isAdminPage && !isLandingPage && (
+      {!isAdminPage && (
         <div className="fixed right-0 top-[40%] -translate-y-1/2 z-40 flex flex-col gap-3 items-end font-[var(--font-poppins)]">
           {/* Admission Enquiry Tab (Navy Blue/White Text) */}
           <button

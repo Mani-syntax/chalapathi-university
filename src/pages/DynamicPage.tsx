@@ -525,110 +525,7 @@ const getPageContent = (path: string, programs: any[]) => {
     };
   }
 
-  // Admissions Pages
-  if (cleanPath.startsWith("/admissions")) {
-    if (cleanPath.includes("undergraduate")) {
-      return {
-        title: "Undergraduate Admissions (B.Tech / B.Pharm)",
-        category: "Admissions",
-        desc: "Build a solid engineering or pharmacy foundation with our premium 4-year undergraduate programs.",
-        body: (
-          <div className="space-y-6 text-gray-600 text-sm mt-4">
-            <p>We offer undergraduate programs designed to cultivate critical thinking, technical expertise, and leadership skills.</p>
-            <div className="bg-white border border-gray-100 p-5 rounded-2xl shadow-sm">
-              <h4 className="font-extrabold text-[#072A6C] mb-2">Eligibility Criteria</h4>
-              <p className="text-xs text-gray-500 leading-relaxed">Candidates must have completed 10+2 with Physics, Chemistry, and Mathematics (or Biology for Pharmacy) with a minimum of 50% marks. Admissions are based on merit ranks in state-level or national engineering/pharmacy entrance exams.</p>
-            </div>
-            <Link to="/admissions/apply" className="h-10 px-6 bg-[#D4AF37] hover:bg-[#C9A84C] text-white text-xs font-bold rounded-xl inline-flex items-center gap-2 shadow-sm transition-all w-fit">Apply Online <ArrowRight size={14} /></Link>
-          </div>
-        )
-      };
-    }
-    if (cleanPath.includes("postgraduate")) {
-      return {
-        title: "Postgraduate Admissions (M.Tech / MBA / MCA)",
-        category: "Admissions",
-        desc: "Specialize and accelerate your career with our industry-aligned PG curricula.",
-        body: (
-          <div className="space-y-6 text-gray-600 text-sm mt-4">
-            <p>Advance your professional journey with our tailored postgraduate engineering, computer application, and business management courses.</p>
-            <div className="bg-white border border-gray-100 p-5 rounded-2xl shadow-sm">
-              <h4 className="font-extrabold text-[#072A6C] mb-2">Eligibility Criteria</h4>
-              <p className="text-xs text-gray-500 leading-relaxed">A Bachelor's degree (B.Tech, BCA, B.Sc, B.Com, or B.A) in relevant streams with at least 50% marks is required. Admission is granted based on qualifying scores in national or university-level PG entrance tests.</p>
-            </div>
-            <Link to="/admissions/apply" className="h-10 px-6 bg-[#D4AF37] hover:bg-[#C9A84C] text-white text-xs font-bold rounded-xl inline-flex items-center gap-2 shadow-sm transition-all w-fit">Apply Online <ArrowRight size={14} /></Link>
-          </div>
-        )
-      };
-    }
-    if (cleanPath.includes("apply")) {
-      return {
-        title: "Apply Online",
-        category: "Admissions",
-        desc: "Start your journey today. Fill out our online application form to secure your seat.",
-        body: <AdmissionsApplyFlow />
-      };
-    }
 
-    return {
-      title: "Admissions Portal",
-      category: "Admissions",
-      desc: "Enrollment processes, eligibility guidelines, fee charts, and student aids.",
-      body: (
-        <div className="space-y-12 mt-4 font-[var(--font-poppins)]">
-          <div className="flex justify-center mb-8">
-            <Link to="/admissions/apply" className="w-full max-w-sm bg-[#072A6C] text-white p-6 rounded-[16px] shadow-sm flex flex-col justify-between min-h-[140px] hover:translate-y-[-2px] transition-transform text-left">
-              <h4 className="font-bold text-sm">Start Application</h4>
-              <span className="text-xs text-blue-200 flex items-center gap-1">Online Application Form <ArrowRight size={12} /></span>
-            </Link>
-          </div>
-
-          {/* Steps to Follow timeline */}
-          <div className="pt-8 border-t border-gray-100 space-y-8 text-center">
-            <div className="inline-flex flex-col items-center">
-              <span className="px-5 py-2 bg-[#072A6C] text-[#D4AF37] text-xs font-extrabold tracking-[2px] rounded-full uppercase shadow-sm border border-[#D4AF37]/20">
-                Steps To Follow
-              </span>
-              <h3 className="text-xl md:text-2xl font-[900] text-[#072A6C] mt-4">
-                Admissions Process 2026
-              </h3>
-              <div className="w-16 h-1 bg-[#D4AF37] mt-3 rounded" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch relative">
-              {[
-                { id: 1, label: "Register Yourself", desc: "Create your admission account.", icon: UserPlus },
-                { id: 2, label: "Fill Online Application", desc: "Enter academic and personal information.", icon: FileText }
-              ].map((step) => {
-                const StepIcon = step.icon;
-                return (
-                  <div key={step.id} className="bg-white border border-gray-100 rounded-[20px] p-6 shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col items-center justify-between text-center min-h-[220px] relative group h-full">
-                    <div className="w-12 h-12 rounded-full bg-[#072A6C]/5 flex items-center justify-center text-[#D4AF37] mb-4 group-hover:bg-[#D4AF37] group-hover:text-white transition-colors duration-300">
-                      <StepIcon size={20} />
-                    </div>
-                    <div className="space-y-2 flex-grow flex flex-col justify-center">
-                      <h4 className="text-sm font-[800] text-[#072A6C] tracking-tight">{step.label}</h4>
-                      <p className="text-[11px] text-gray-500 font-light leading-relaxed">{step.desc}</p>
-                    </div>
-                    <span className="absolute top-4 right-4 text-[10px] font-extrabold text-gray-300">0{step.id}</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="pt-4">
-              <Link
-                to="/admissions/apply"
-                className="h-11 px-8 bg-[#D4AF37] hover:bg-[#C9A84C] text-white text-xs font-bold rounded-xl inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer uppercase tracking-wider"
-              >
-                Apply Now <ArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )
-    };
-  }
 
 
 
@@ -2659,8 +2556,7 @@ export default function DynamicPage() {
             </div>
           </motion.div>
 
-          {/* Horizontal Quick Info box at the bottom of every page */}
-          {!isManagement && (
+          {!isManagement && pathname.toLowerCase() !== "/contact" && (
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4"
               initial={{ opacity: 0, y: 10 }}
@@ -4405,60 +4301,7 @@ function ContactUsView() {
 
       </div>
 
-      {/* Grid of Department-wise helplines */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        {/* Admissions Office */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition-shadow">
-          <div>
-            <span className="font-extrabold text-[#072A6C] block uppercase tracking-wide text-xs border-b border-gray-100 pb-2 mb-2">Admissions Office</span>
-            <div className="space-y-1 text-xs text-gray-500 font-light">
-              <span className="block font-semibold text-gray-700">Helpline Numbers:</span>
-              <span className="block">+91 88866 30340</span>
-              <span className="block">+91 88866 30341</span>
-            </div>
-          </div>
-          <div className="space-y-0.5 text-xs text-gray-500 font-light pt-2">
-            <span className="block font-semibold text-gray-700">Email:</span>
-            <a href="mailto:admissions@city.ac.in" className="block text-[#D4AF37] font-semibold hover:underline truncate">admissions@city.ac.in</a>
-          </div>
-        </div>
 
-        {/* Principal's Office */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition-shadow">
-          <div>
-            <span className="font-extrabold text-[#072A6C] block uppercase tracking-wide text-xs border-b border-gray-100 pb-2 mb-2">Principal's Office</span>
-            <div className="space-y-1 text-xs text-gray-500 font-light">
-              <span className="block font-medium text-[#D4AF37] font-semibold mb-1">Dr. Kolla Naga Sreenivasa Rao</span>
-              <span className="block font-semibold text-gray-700">Mobile Connections:</span>
-              <span className="block">+91 88866 30355</span>
-              <span className="block">+91 88866 30356</span>
-            </div>
-          </div>
-          <div className="space-y-0.5 text-xs text-gray-500 font-light pt-2">
-            <span className="block font-semibold text-gray-700">Email:</span>
-            <a href="mailto:principal@city.ac.in" className="block text-[#D4AF37] font-semibold hover:underline truncate">principal@city.ac.in</a>
-          </div>
-        </div>
-
-        {/* Exam & Scholarship Section */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition-shadow">
-          <div>
-            <span className="font-extrabold text-[#072A6C] block uppercase tracking-wide text-xs border-b border-gray-100 pb-2 mb-2">Exams & Scholarships</span>
-            <div className="space-y-1 text-xs text-gray-500 font-light">
-              <span className="block font-semibold text-gray-700">Examination Cell:</span>
-              <span className="block">08645-326372</span>
-              <a href="mailto:exams@city.ac.in" className="block text-[#D4AF37] hover:underline truncate">exams@city.ac.in</a>
-            </div>
-          </div>
-          <div className="space-y-0.5 text-xs text-gray-500 font-light pt-2 border-t border-gray-50 mt-1">
-            <span className="block font-semibold text-gray-700">Scholarship Office:</span>
-            <span className="block">+91 98481 33748</span>
-            <span className="block">08645-326372</span>
-          </div>
-        </div>
-
-      </div>
 
       {/* Google Maps Container */}
       <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm space-y-4">

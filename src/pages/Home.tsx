@@ -191,6 +191,10 @@ export default function Home() {
         setTimeout(() => {
           document.getElementById("academics")?.scrollIntoView({ behavior: "smooth" });
         }, 150);
+      } else if (hash === "#enquiry-form") {
+        setTimeout(() => {
+          document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth" });
+        }, 150);
       }
     };
     handleHashScroll();
@@ -267,27 +271,7 @@ export default function Home() {
           <span className="px-4 whitespace-nowrap flex items-center gap-0" {...(ariaHidden ? { 'aria-hidden': 'true' } : {})}>
             {marqueeItems.map((item: { text: string; link: string }, idx: number) => (
               <React.Fragment key={idx}>
-                {item.link ? (
-                  item.link.startsWith("http") ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline hover:text-[#072A6C] transition-colors cursor-pointer"
-                    >
-                      {item.text}
-                    </a>
-                  ) : (
-                    <Link
-                      to={item.link}
-                      className="hover:underline hover:text-[#072A6C] transition-colors cursor-pointer"
-                    >
-                      {item.text}
-                    </Link>
-                  )
-                ) : (
-                  <span>{item.text}</span>
-                )}
+                <span>{item.text}</span>
                 {idx < marqueeItems.length - 1 && <span className="mx-2"> • </span>}
               </React.Fragment>
             ))}
@@ -629,7 +613,7 @@ export default function Home() {
       </section>
 
       {/* ═══ ADMISSION ENQUIRY FORM ═══ */}
-      <section className="bg-gradient-to-b from-[#f8f9fa] to-white py-16 border-t border-gray-100 font-[var(--font-poppins)]">
+      <section id="enquiry-form" className="bg-gradient-to-b from-[#f8f9fa] to-white py-16 border-t border-gray-100 font-[var(--font-poppins)]">
         <div className="max-w-[1280px] mx-auto px-5 flex flex-col items-center">
           
           {/* Creative Attractive Section Header */}
@@ -844,21 +828,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Signature, Name, Designation & Action Button */}
-                <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 z-10">
-                  <div className="space-y-2">
-                    {/* Cursive Signature */}
-                    <div className="h-12 flex items-center select-none">
-                      <svg className="h-9 text-[#072A6C]" viewBox="0 0 160 50" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                        <path d="M15 28c12-6 22-14 26-1s-8 12-4 4 12-16 16-4-4 12 0 4 10-14 12-2-4 10 4 2 10-12 12 0-4 10 4 2 10-12 12 4-4 8 4 2c10 2 15-4 18-9" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h5 className="text-xs font-extrabold text-[#072A6C]">{localStorage.getItem("chalapathi_chairman_name") || "Dr. Y. V Anjaneyulu"}</h5>
-                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{localStorage.getItem("chalapathi_chairman_designation") || "Chairman"}</span>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
 
@@ -992,6 +962,9 @@ export default function Home() {
             <h2 className="text-[26px] font-[800] text-[#072A6C]">
               A Campus Built for Excellence
             </h2>
+            <p className="text-sm text-gray-600 leading-relaxed mt-3 font-light">
+              Spread across lush green acres in the heart of Guntur, Andhra Pradesh, our campus features modern academic blocks, state-of-the-art laboratories, a central library with over 50,000 volumes, smart classrooms, sports arenas, and dedicated spaces for innovation and entrepreneurship — all designed to inspire learning and holistic development.
+            </p>
           </div>
 
           <motion.div
@@ -1025,16 +998,10 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2 font-[var(--font-poppins)]">
                 <Link
-                  to="/admissions/apply"
+                  to="/#enquiry-form"
                   className="h-10 px-5 bg-white text-[#072A6C] hover:bg-blue-50 text-[11px] font-[700] rounded-[8px] inline-flex items-center gap-1.5 shadow active:scale-95 transition-transform"
                 >
                   Apply Now <ArrowRight size={13} />
-                </Link>
-                <Link
-                  to="/admissions"
-                  className="h-10 px-5 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white text-[11px] font-[700] rounded-[8px] inline-flex items-center gap-1.5 active:scale-95 transition-all duration-200"
-                >
-                  Download Brochure
                 </Link>
                 <Link
                   to="/contact"
@@ -1064,11 +1031,11 @@ export default function Home() {
               <div className="space-y-2.5 text-[11px] text-gray-600 font-[400]">
                 <div className="flex items-start gap-1.5">
                   <MapPin size={12} className="shrink-0 mt-0.5 text-gray-400" />
-                  <span>A.R. Nagar, Mothadaka, Guntur, Andhra Pradesh - 522034</span>
+                  <span>Mothadaka, Guntur, Andhra Pradesh</span>
                 </div>
                 <div className="flex items-start gap-1.5">
                   <Phone size={12} className="shrink-0 mt-0.5 text-gray-400" />
-                  <span>8886630355 | 8886630356 9905505566</span>
+                  <span>88866 30355, 88866 30356</span>
                 </div>
                 <div className="flex items-start gap-1.5">
                   <Mail size={12} className="shrink-0 mt-0.5 text-gray-400" />

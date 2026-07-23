@@ -1,5 +1,4 @@
 {
-  "name": "chalapathi-new",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

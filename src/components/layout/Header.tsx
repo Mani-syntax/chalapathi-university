@@ -280,7 +280,7 @@ export default function Header({ onToggleAi }: { onToggleAi?: () => void } = {})
   const navHrefs: Record<string, string> = {
     "About Us": "/#about-us",
     "Academics": "/#academics",
-    "Admissions": "/admissions",
+    "Admissions": "/#enquiry-form",
     "Contact Us": "/contact",
   };
 
@@ -389,7 +389,7 @@ export default function Header({ onToggleAi }: { onToggleAi?: () => void } = {})
           {/* Right CTA */}
           <div className="hidden min-[1024px]:flex items-center shrink-0">
             <Link
-              to="/admissions/apply"
+              to="/#enquiry-form"
               className="h-11 px-7 text-sm md:text-base bg-[#D4AF37] hover:bg-[#C9A84C] text-white font-extrabold rounded-full inline-flex items-center justify-center transition-all shadow-sm hover:shadow hover:scale-[1.02] active:scale-[0.98] font-[var(--font-poppins)] whitespace-nowrap"
             >
               Apply Now
@@ -532,7 +532,7 @@ export default function Header({ onToggleAi }: { onToggleAi?: () => void } = {})
             );
           })}
           <div className="flex flex-col gap-3 pt-8">
-            <Link to="/admissions/apply" className="w-full text-center py-3 bg-[#D4AF37] text-white font-bold text-sm rounded-[12px] font-[var(--font-poppins)]">Apply Now</Link>
+            <Link to="/#enquiry-form" className="w-full text-center py-3 bg-[#D4AF37] text-white font-bold text-sm rounded-[12px] font-[var(--font-poppins)]">Apply Now</Link>
           </div>
         </div>
       )}
